@@ -1,0 +1,56 @@
+=============================================================================
+APEX INFRASTRUCTURE & CONSTRUCTION — WEBSITE TEMPLATE LICENSE
+=============================================================================
+
+Copyright (c) 2026, Apex Template Authors. All rights reserved.
+
+This license governs the use of the accompanying website template ("the Template"). 
+By purchasing, downloading, or using the Template, you ("the Buyer") agree to the 
+terms of this License.
+
+1. BUYER RIGHTS & PERMITTED USAGES
+----------------------------------
+- Single Use: The Buyer is granted a non-exclusive, non-transferable license to use 
+  the Template to build one (1) single website for personal or commercial use.
+- Modification: The Buyer is permitted to modify the HTML, CSS, JavaScript, and other 
+  included source files to fit the specific needs of the website they are building.
+- Commercial Usage: The Template may be used for websites representing commercial entities,
+  online businesses, and client projects, subject to the single-use restriction.
+
+2. RESTRICTIONS & PROHIBITED USAGES
+-----------------------------------
+- Redistribution & Reselling: The Buyer is strictly prohibited from reselling, redistributing,
+  sub-licensing, or sharing the Template (or modified versions of the Template) in any 
+  format, including as a downloadable package, theme, template, or site-builder block on 
+  any store, platform, or repository.
+- Reusable Derivative Works: The Buyer may not create derivative products (such as WordPress 
+  themes, Jekyll templates, Shopify themes, etc.) based on this Template for sale or 
+  free distribution without explicit written permission from the copyright owner.
+- Multi-use Projects: A separate license must be purchased for each unique website instance 
+  built using the Template. Buying a single license and building multiple websites for different 
+  domains/clients is a violation of this License.
+
+3. DEMO CONTENT & IMAGES
+------------------------
+- The images, photography, illustrations, and logos included in the Template are demo assets 
+  provided for preview purposes only. 
+- Some assets are hotlinked or sourced under public royalty-free licenses (e.g., Unsplash). 
+- The copyright of these assets remains with their respective owners. The Buyer must verify 
+  licensing or replace these assets with their own before deploying the website in a 
+  production environment.
+
+4. SUPPORT POLICY
+-----------------
+- Support is limited to template-related questions, bug reports, and standard code features. 
+- Template support does not include general web hosting setup, custom software development, 
+  extensive aesthetic redesigns, or integration of third-party plugins. 
+- For support inquiries, refer to the SUPPORT.md document in this package.
+
+5. DISCLAIMER OF WARRANTY & LIMITATION OF LIABILITY
+---------------------------------------------------
+THE TEMPLATE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR 
+PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE 
+LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+TORT, OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE TEMPLATE OR THE USE 
+OR OTHER DEALINGS IN THE TEMPLATE.

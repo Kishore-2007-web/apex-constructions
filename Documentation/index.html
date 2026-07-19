@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apex Template Documentation — Help & Customization Manual</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --color-primary: #0f172a;
+      --color-accent: #d97706;
+      --color-bg-body: #f8fafc;
+      --color-bg-card: #ffffff;
+      --color-text-main: #1e293b;
+      --color-text-muted: #64748b;
+      --color-border: #e2e8f0;
+      --color-info: #3b82f6;
+      --color-info-light: #eff6ff;
+      --color-warning: #f59e0b;
+      --color-warning-light: #fffbeb;
+      --font-headings: 'Outfit', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--color-text-main);
+      background-color: var(--color-bg-body);
+    }
+
+    /* Layout Structure */
+    .app-container {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 992px) {
+      .app-container {
+        grid-template-columns: 280px 1fr;
+      }
+    }
+
+    /* Sidebar Styling */
+    .sidebar {
+      background-color: var(--color-primary);
+      color: #f8fafc;
+      padding: 2.5rem 2rem;
+      height: auto;
+      border-bottom: 4px solid var(--color-accent);
+    }
+
+    @media (min-width: 992px) {
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 280px;
+        height: 100vh;
+        overflow-y: auto;
+        border-bottom: none;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+      }
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-headings);
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 2.5rem;
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    .brand-logo polygon {
+      fill: var(--color-accent);
+    }
+
+    .brand-logo span {
+      color: var(--color-accent);
+    }
+
+    .doc-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .doc-nav-link {
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+      display: block;
+      padding: 0.25rem 0;
+    }
+
+    .doc-nav-link:hover {
+      color: var(--color-accent);
+    }
+
+    /* Main Content Area */
+    .content-area {
+      padding: 2.5rem 1.5rem;
+    }
+
+    @media (min-width: 992px) {
+      .content-area {
+        padding: 4rem 5rem;
+        margin-left: 280px;
+      }
+    }
+
+    .doc-section {
+      margin-bottom: 4.5rem;
+      background: var(--color-bg-card);
+      padding: 2.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--color-border);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    h1, h2, h3, h4 {
+      font-family: var(--font-headings);
+      color: var(--color-primary);
+      margin-bottom: 1.25rem;
+      line-height: 1.25;
+    }
+
+    h1 {
+      font-size: 2.75rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    h2 {
+      font-size: 1.85rem;
+      font-weight: 700;
+      border-bottom: 2px solid var(--color-border);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    h3 {
+      font-size: 1.35rem;
+      font-weight: 600;
+      margin-top: 1.5rem;
+    }
+
+    p {
+      margin-bottom: 1.25rem;
+      color: var(--color-text-main);
+    }
+
+    a {
+      color: var(--color-accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Code Blocks */
+    pre, code {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.9rem;
+      border-radius: 4px;
+    }
+
+    code {
+      background-color: #f1f5f9;
+      padding: 0.2rem 0.4rem;
+      color: #0f172a;
+    }
+
+    pre {
+      background-color: #0f172a;
+      color: #f8fafc;
+      padding: 1.5rem;
+      overflow-x: auto;
+      margin-bottom: 1.5rem;
+      border: 1px solid #1e293b;
+    }
+
+    pre code {
+      background-color: transparent;
+      padding: 0;
+      color: inherit;
+    }
+
+    /* Alerts */
+    .alert {
+      padding: 1.25rem 1.5rem;
+      border-left: 4px solid;
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+    }
+
+    .alert-info {
+      background-color: var(--color-info-light);
+      border-left-color: var(--color-info);
+      color: #1e3a8a;
+    }
+
+    .alert-warning {
+      background-color: var(--color-warning-light);
+      border-left-color: var(--color-warning);
+      color: #78350f;
+    }
+
+    .alert p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Lists */
+    ul, ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.75rem;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+    }
+
+    th, td {
+      padding: 0.85rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    th {
+      font-family: var(--font-headings);
+      background-color: #f1f5f9;
+      color: var(--color-primary);
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <a href="#" class="brand-logo">
+      <svg viewBox="0 0 32 32" width="24" height="24">
+        <polygon points="16,2 30,28 2,28" />
+      </svg>
+      APEX<span>INFRA</span>
+    </a>
+    <ul class="doc-nav-list">
+      <li><a href="#welcome" class="doc-nav-link">Introduction</a></li>
+      <li><a href="#structure" class="doc-nav-link">Folder Structure</a></li>
+      <li><a href="#installation" class="doc-nav-link">Getting Started</a></li>
+      <li><a href="#colors" class="doc-nav-link">Changing Colors</a></li>
+      <li><a href="#fonts" class="doc-nav-link">Changing Fonts</a></li>
+      <li><a href="#images" class="doc-nav-link">Replacing Images</a></li>
+      <li><a href="#forms" class="doc-nav-link">Contact Forms Setup</a></li>
+      <li><a href="#deploy" class="doc-nav-link">Deployment Guide</a></li>
+      <li><a href="#faq" class="doc-nav-link">Troubleshooting FAQ</a></li>
+    </ul>
+  </aside>
+
+  <!-- Content -->
+  <main class="content-area">
+
+    <!-- Header Section -->
+    <div style="margin-bottom: 4rem;">
+      <h1>Template Help Documentation</h1>
+      <p style="font-size: 1.15rem; color: var(--color-text-muted); margin-top: 0.5rem;">A complete customization and configuration manual for the **Apex Infrastructure Website Template**.</p>
+    </div>
+
+    <!-- Introduction Section -->
+    <section class="doc-section" id="welcome">
+      <h2>Introduction</h2>
+      <p>Thank you for purchasing the **Apex Infrastructure & Construction Website Template**! This manual will walk you through setting up and customizing the template files. If you have experience with HTML, CSS, and basic JavaScript, editing this template will be simple.</p>
+      <div class="alert alert-info">
+        <p><strong>Note:</strong> This is a static HTML5 template. It does not require database software, compilers, node packages, or complex configuration environments to run. You can deploy it instantly on any hosting provider.</p>
+      </div>
+    </section>
+
+    <!-- Folder Structure Section -->
+    <section class="doc-section" id="structure">
+      <h2>Folder Structure</h2>
+      <p>The files inside the <code>Template/</code> folder are structured logically for quick customization:</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Path</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>index.html</code></td>
+            <td>The main layout structure of the website, containing all SEO parameters and schema markups.</td>
+          </tr>
+          <tr>
+            <td><code>assets/css/style.css</code></td>
+            <td>Core style file, housing styling rules, breakpoints, and theme variable configuration.</td>
+          </tr>
+          <tr>
+            <td><code>assets/js/main.js</code></td>
+            <td>Main JavaScript file executing slider animations, scroll events, statistics, and filtering.</td>
+          </tr>
+          <tr>
+            <td><code>assets/images/</code></td>
+            <td>Contains all optimized WebP photos and layout graphics.</td>
+          </tr>
+          <tr>
+            <td><code>assets/favicons/</code></td>
+            <td>Contains web icons, webmanifests, and Apple Touch Icon packages.</td>
+          </tr>
+          <tr>
+            <td><code>robots.txt</code> & <code>sitemap.xml</code></td>
+            <td>SEO indexing configuration blueprints.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Getting Started Section -->
+    <section class="doc-section" id="installation">
+      <h2>Getting Started</h2>
+      <p>To run the template locally on your PC:</p>
+      <ol>
+        <li>Unzip the downloaded project package file.</li>
+        <li>Locate the <code>Template/</code> folder.</li>
+        <li>Double-click the <code>index.html</code> file to open the website locally in your default browser.</li>
+      </ol>
+      <p>To run with local staging server emulation for accurate form test simulations and speed validation, you can use Python or Node.js:</p>
+      <pre><code># Python http.server run (inside Template/ folder)
+python -m http.server 8080
+
+# Node.js http-server run (inside Template/ folder)
+npx http-server</code></pre>
+    </section>
+
+    <!-- Changing Colors Section -->
+    <section class="doc-section" id="colors">
+      <h2>Changing Colors</h2>
+      <p>The template uses CSS Custom Properties (CSS variables) for coloring. You can easily adjust the entire brand appearance by modifying these values in <code>assets/css/style.css</code> inside the <code>:root</code> block:</p>
+      <pre><code>:root {
+  /* Color Palette variables */
+  --color-primary: #0f172a;        /* Deep Slate / Dark panels background */
+  --color-secondary: #020617;      /* Solid Obsidian / Background headers */
+  --color-accent: #d97706;         /* Architectural Amber / Accent color */
+  --color-accent-hover: #b45309;   /* Darker Gold on hover elements */
+  --color-accent-light: #fef3c7;   /* Light Gold Tint for tag highlight blocks */
+  --color-text-body: #334155;      /* Dark Slate for body copy text */
+  --color-bg-light: #f8fafc;       /* Light neutral section background */
+  --color-bg-alt: #f1f5f9;         /* Cool Ice Gray section background */
+  --color-success: #10b981;        /* Forest/Safety Green */
+  --color-error: #ef4444;          /* Red validation alerts */
+}</code></pre>
+      <div class="alert alert-warning">
+        <p><strong>Recommendation:</strong> When changing hex codes, make sure you audit contrast ratings (using online testers like WebAIM Contrast Checker) to maintain accessibility compliance.</p>
+      </div>
+    </section>
+
+    <!-- Changing Fonts Section -->
+    <section class="doc-section" id="fonts">
+      <h2>Changing Fonts</h2>
+      <p>Typography is fetched via Google Fonts. To change the typography styles:</p>
+      <ol>
+        <li>Find the font links at the top of the <code>index.html</code> file:
+          <pre><code>&lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Outfit:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet" /&gt;</code></pre>
+        </li>
+        <li>Browse and fetch replacement families on Google Fonts, copy the embed tags, and replace the old link inside <code>index.html</code>.</li>
+        <li>Update variables in <code>assets/css/style.css</code> to match your custom family names:
+          <pre><code>--font-headings: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+--font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;</code></pre>
+        </li>
+      </ol>
+    </section>
+
+    <!-- Replacing Images Section -->
+    <section class="doc-section" id="images">
+      <h2>Replacing Images</h2>
+      <p>All demo images are hosted locally inside <code>Template/assets/images/</code> as optimized <code>.webp</code> formats. To replace any images:</p>
+      <ul>
+        <li>Simply save your new image with the same name and format (WebP) inside <code>Template/assets/images/</code> to overwrite it automatically.</li>
+        <li>If you prefer to use standard JPEGs or PNGs, update the respective image source attributes (<code>src</code> or <code>style.backgroundImage</code>) in <code>index.html</code> and <code>assets/js/main.js</code>.</li>
+      </ul>
+      <div class="alert alert-info">
+        <p><strong>Tip:</strong> Always compress your custom images before deploying. Large images significantly slow down web load speeds and degrade search ranking metrics.</p>
+      </div>
+    </section>
+
+    <!-- Contact Form Setup Section -->
+    <section class="doc-section" id="forms">
+      <h2>Contact Form Setup</h2>
+      <p>Because static HTML templates cannot send emails directly, you need to configure the form to submit to a form processor backend. Below are the easiest ways to handle form submissions without writing server scripts:</p>
+      
+      <h3>Option A: Formspree (Highly Recommended)</h3>
+      <ol>
+        <li>Create a free account at <a href="https://formspree.io" target="_blank" rel="noopener noreferrer">Formspree.io</a>.</li>
+        <li>Create a form inside Formspree dashboard, and copy the form endpoint URL.</li>
+        <li>Locate the form in <code>index.html</code>, and add the endpoint to the <code>action</code> attribute:
+          <pre><code>&lt;form id="contact-form" action="https://formspree.io/f/your_form_id" method="POST" novalidate&gt;</code></pre>
+        </li>
+      </ol>
+
+      <h3>Option B: Netlify Forms (For Netlify Hosting)</h3>
+      <p>If you host your site on Netlify, they handle forms automatically. Simply update the form tag in <code>index.html</code> to include <code>data-netlify="true"</code>:</p>
+      <pre><code>&lt;form id="contact-form" data-netlify="true" novalidate&gt;</code></pre>
+    </section>
+
+    <!-- Deployment Section -->
+    <section class="doc-section" id="deploy">
+      <h2>Deployment Guide</h2>
+      <p>Deploying your website is easy. Choose one of the following methods:</p>
+      
+      <h3>1. Traditional Hosting (FTP/cPanel)</h3>
+      <p>If you are using GoDaddy, HostGator, Bluehost, or similar providers, connect to your server directory using an FTP client (such as FileZilla), and upload all contents of the <code>Template/</code> folder into the <code>public_html/</code> directory.</p>
+
+      <h3>2. Modern Static Hosting (Netlify / Vercel / GitHub Pages)</h3>
+      <p>These modern platforms offer high speed deployment. Simply upload the files or connect your GitHub repository and point the build directory to the <code>Template/</code> root. No build command is necessary.</p>
+    </section>
+
+    <!-- Troubleshooting FAQ Section -->
+    <section class="doc-section" id="faq">
+      <h2>Troubleshooting FAQ</h2>
+      <h3>Q1: The website is looking broken or styles do not load.</h3>
+      <p>Ensure that the path of the stylesheet link in the <code>&lt;head&gt;</code> of your HTML is set correctly: <code>href="assets/css/style.css"</code>.</p>
+      
+      <h3>Q2: JavaScript elements (sliders, details modals, or tabs) do not interact.</h3>
+      <p>Make sure you have JavaScript enabled in your browser settings, check the browser console for file load errors, and verify the script source location at the footer: <code>src="assets/js/main.js"</code>.</p>
+
+      <h3>Q3: What are the support policies?</h3>
+      <p>Refer to <code>SUPPORT.md</code> inside the root template folder to review FAQs, troubleshooting steps, and support parameters.</p>
+    </section>
+
+  </main>
+
+</div>
+
+</body>
+</html>

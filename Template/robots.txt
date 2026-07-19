@@ -1,0 +1,6 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Sitemap placeholder (update with your actual production sitemap URL)
+Sitemap: https://yourdomain.com/sitemap.xml
