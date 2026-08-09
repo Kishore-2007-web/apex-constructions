@@ -102,6 +102,16 @@
   padding: 0;
 }
 
+/* Prevent any element from escaping its container horizontally */
+html, body {
+  overflow-x: hidden;
+}
+
+section, main, footer, header, aside {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
 html {
   scroll-behavior: smooth;
   font-size: 16px;
@@ -110,7 +120,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   width: 100%;
-  max-width: 100%;
+  max-width: 100vw;
 }
 
 body {
@@ -121,8 +131,9 @@ body {
   background-color: var(--color-bg-light);
   min-width: 320px;
   width: 100%;
-  max-width: 100%;
+  max-width: 100vw;
   overflow-x: hidden;
+  overflow-y: auto;
   position: relative;
 }
 
@@ -198,7 +209,9 @@ ul, ol {
 .section-padding {
   padding-block: var(--space-section);
   width: 100%;
+  max-width: 100vw;
   overflow-x: clip;
+  position: relative;
 }
 
 .bg-dark {
@@ -653,6 +666,7 @@ h1, h2, h3, h4, h5, h6 {
   padding-top: clamp(6rem, 12vh, 8.5rem);
   padding-bottom: clamp(3rem, 6vh, 5.5rem);
   width: 100%;
+  max-width: 100vw;
   box-sizing: border-box;
 }
 
@@ -703,26 +717,27 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .hero-content {
-  max-width: 760px;
+  max-width: min(760px, 100%);
   width: 100%;
 }
 
 .hero-tagline {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
   background: rgba(245, 158, 11, 0.12);
   border: 1px solid rgba(245, 158, 11, 0.35);
   color: var(--color-accent-vibrant);
-  padding: 0.4rem 1rem;
+  padding: 0.35rem 0.85rem;
   font-family: var(--font-headings);
   font-weight: 700;
-  font-size: clamp(0.7rem, 0.3vw + 0.65rem, 0.8rem);
-  letter-spacing: 0.08em;
+  font-size: clamp(0.65rem, 2.5vw, 0.8rem);
+  letter-spacing: 0.07em;
   text-transform: uppercase;
   border-radius: var(--border-radius-full);
-  margin-bottom: clamp(1rem, 2.5vw, 1.5rem);
+  margin-bottom: clamp(0.85rem, 2.5vw, 1.5rem);
   max-width: 100%;
+  word-break: break-word;
 }
 
 .hero-title {
@@ -768,24 +783,26 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Stats Row in Hero */
 .hero-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 130px), 1fr));
-  gap: clamp(1rem, 3vw, 2rem);
+  display: flex;
+  flex-direction: row;
+  gap: clamp(1rem, 4vw, 2.5rem);
   border-top: 1px solid rgba(255, 255, 255, 0.12);
-  padding-top: 1.75rem;
-  max-width: 620px;
+  padding-top: 1.5rem;
   width: 100%;
+  max-width: 620px;
+  flex-wrap: nowrap;
 }
 
 .hero-stat-item {
   min-width: 0;
+  flex: 1;
 }
 
 .hero-stat-item h3 {
-  font-size: clamp(1.65rem, 3.5vw, 2.25rem);
+  font-size: clamp(1.4rem, 4vw, 2.25rem);
   font-weight: 800;
   color: var(--color-text-main);
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.15rem;
   line-height: 1.1;
 }
 
@@ -794,11 +811,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .hero-stat-item p {
-  font-size: clamp(0.725rem, 0.3vw + 0.65rem, 0.8rem);
+  font-size: clamp(0.65rem, 1.8vw, 0.8rem);
   color: var(--color-text-muted-dark);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   font-weight: 600;
+  word-break: break-word;
 }
 
 /* ==========================================================================
@@ -807,9 +825,10 @@ h1, h2, h3, h4, h5, h6 {
 .about-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: clamp(2.5rem, 5vw, 4.5rem);
+  gap: clamp(2rem, 5vw, 4.5rem);
   align-items: center;
   width: 100%;
+  overflow-x: clip;
 }
 
 @media (min-width: 992px) {
@@ -909,17 +928,18 @@ h1, h2, h3, h4, h5, h6 {
 .about-badge {
   position: absolute;
   bottom: 0;
-  left: clamp(0.75rem, 3vw, 2.25rem);
+  left: clamp(0.5rem, 3vw, 2.25rem);
   background-color: var(--color-accent);
   color: #ffffff;
-  padding: clamp(0.75rem, 2.5vw, 1.35rem) clamp(1rem, 3vw, 1.6rem);
+  padding: clamp(0.6rem, 2vw, 1.35rem) clamp(0.85rem, 2.5vw, 1.6rem);
   border-radius: var(--border-radius-sm);
   display: flex;
   align-items: center;
-  gap: 0.85rem;
+  gap: 0.65rem;
   box-shadow: var(--shadow-lg);
-  max-width: calc(100% - 1.5rem);
+  max-width: calc(100% - 1rem);
   box-sizing: border-box;
+  z-index: 2;
 }
 
 .about-badge svg {
@@ -953,9 +973,10 @@ h1, h2, h3, h4, h5, h6 {
    ========================================================================== */
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
-  gap: clamp(1.25rem, 2.5vw, 2rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  gap: clamp(1rem, 2.5vw, 2rem);
   width: 100%;
+  overflow-x: clip;
 }
 
 .service-card {
@@ -1138,6 +1159,7 @@ h1, h2, h3, h4, h5, h6 {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
   gap: clamp(1.25rem, 2.5vw, 2rem);
   width: 100%;
+  overflow-x: clip;
 }
 
 .project-card {
@@ -1257,7 +1279,10 @@ h1, h2, h3, h4, h5, h6 {
    ========================================================================== */
 .modal {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
   height: 100%;
   z-index: var(--z-modal);
@@ -1270,6 +1295,7 @@ h1, h2, h3, h4, h5, h6 {
   pointer-events: none;
   transition: opacity var(--transition-normal), visibility var(--transition-normal);
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .modal.open {
