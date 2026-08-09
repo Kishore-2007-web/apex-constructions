@@ -1,12 +1,12 @@
 /**
  * Apex Infrastructure & Construction — Main JavaScript
- * Production-quality, modular, accessible vanilla JS.
+ * Production-grade, modular, fully accessible vanilla JS (ES6+).
  */
 
 'use strict';
 
 // ============================================================
-// PROJECT DATA — centralized data for project modals
+// PROJECT DATA — Centralized dataset for project modals
 // ============================================================
 const PROJECT_DATA = {
   p1: {
@@ -98,25 +98,19 @@ const PROJECT_DATA = {
 // ============================================================
 // UTILITY HELPERS
 // ============================================================
-
-/** Select a single element or throw. */
 const $ = (selector, context = document) => context.querySelector(selector);
-
-/** Select multiple elements as a real Array. */
 const $$ = (selector, context = document) => [...context.querySelectorAll(selector)];
-
-/** Clamp a value between min and max. */
 const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
 
-// ============================================================
-// PRELOAD REMOVAL — strips transition-killing class after load
-// ============================================================
-window.addEventListener('load', () => {
-  document.body.classList.remove('preload');
+// Remove transition suppression once page is loaded
+window.addEventListener('DOMContentLoaded', () => {
+  requestAnimationFrame(() => {
+    document.body.classList.remove('preload');
+  });
 });
 
 // ============================================================
-// HEADER — sticky shrink & active nav link on scroll
+// HEADER — Sticky shrink & Active Nav Link Scrollspy
 // ============================================================
 (function initHeader() {
   const header = $('#site-header');
@@ -126,78 +120,117 @@ window.addEventListener('load', () => {
   if (!header) return;
 
   const handleScroll = () => {
-    // Sticky shrink
-    if (window.scrollY > 60) {
+    // Sticky shrink header
+    if (window.scrollY > 40) {
       header.classList.add('scrolled');
     } else {
       header.classList.remove('scrolled');
     }
 
-    // Active nav link based on scroll position
+    // Scrollspy active state
     let currentId = '';
+    const scrollPos = window.scrollY + 140;
+
     sections.forEach(section => {
-      const sectionTop = section.offsetTop - 120;
-      if (window.scrollY >= sectionTop) {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      if (scrollPos >= top && scrollPos < top + height) {
         currentId = section.id;
       }
     });
 
     navLinks.forEach(link => {
-      link.classList.remove('active');
-      if (link.getAttribute('href') === `#${currentId}`) {
+      const href = link.getAttribute('href');
+      if (href === `#${currentId}`) {
         link.classList.add('active');
+      } else {
+        link.classList.remove('active');
       }
     });
   };
 
   window.addEventListener('scroll', handleScroll, { passive: true });
-  handleScroll(); // run once on init
+  handleScroll();
 })();
 
 // ============================================================
-// MOBILE NAVIGATION DRAWER
+// MOBILE NAVIGATION DRAWER & FOCUS TRAP
 // ============================================================
 (function initMobileNav() {
   const toggle = $('#nav-toggle');
   const drawer = $('#mobile-nav');
+  const closeBtn = $('#mobile-nav-close');
   const backdrop = $('#mobile-nav-backdrop');
-  const mobileLinks = $$('#mobile-nav .nav-link');
+  const drawerLinks = $$('#mobile-nav .nav-link, #mobile-nav .mobile-nav-cta a');
 
   if (!toggle || !drawer || !backdrop) return;
 
   let isOpen = false;
 
-  const open = () => {
+  const getFocusableEls = () =>
+    $$('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])', drawer);
+
+  const handleFocusTrap = e => {
+    if (e.key !== 'Tab') return;
+    const focusable = getFocusableEls();
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (e.shiftKey) {
+      if (document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else {
+      if (document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  };
+
+  const openDrawer = () => {
     isOpen = true;
     toggle.setAttribute('aria-expanded', 'true');
     toggle.setAttribute('aria-label', 'Close navigation menu');
+    drawer.setAttribute('aria-hidden', 'false');
     drawer.classList.add('open');
     backdrop.classList.add('open');
     document.body.style.overflow = 'hidden';
-    // Focus first link for accessibility
-    const firstLink = drawer.querySelector('a, button');
-    if (firstLink) firstLink.focus();
+
+    // Focus close button
+    if (closeBtn) closeBtn.focus();
+    document.addEventListener('keydown', handleKeyDown);
   };
 
-  const close = () => {
+  const closeDrawer = () => {
     isOpen = false;
     toggle.setAttribute('aria-expanded', 'false');
     toggle.setAttribute('aria-label', 'Open navigation menu');
+    drawer.setAttribute('aria-hidden', 'true');
     drawer.classList.remove('open');
     backdrop.classList.remove('open');
     document.body.style.overflow = '';
+
+    document.removeEventListener('keydown', handleKeyDown);
     toggle.focus();
   };
 
-  toggle.addEventListener('click', () => (isOpen ? close() : open()));
-  backdrop.addEventListener('click', close);
+  const handleKeyDown = e => {
+    if (e.key === 'Escape' && isOpen) {
+      closeDrawer();
+    } else if (isOpen) {
+      handleFocusTrap(e);
+    }
+  };
 
-  // Close drawer when a link is clicked
-  mobileLinks.forEach(link => link.addEventListener('click', close));
+  toggle.addEventListener('click', () => (isOpen ? closeDrawer() : openDrawer()));
+  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+  backdrop.addEventListener('click', closeDrawer);
 
-  // Escape key closes drawer
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && isOpen) close();
+  drawerLinks.forEach(link => {
+    link.addEventListener('click', closeDrawer);
   });
 })();
 
@@ -206,10 +239,10 @@ window.addEventListener('load', () => {
 // ============================================================
 (function initHeroSlider() {
   const slides = $$('.hero-bg-slide');
-  if (!slides.length) return;
+  if (slides.length <= 1) return;
 
   let current = 0;
-  const INTERVAL = 6000;
+  const INTERVAL = 6500;
 
   const advance = () => {
     slides[current].classList.remove('active');
@@ -228,7 +261,7 @@ window.addEventListener('load', () => {
   if (!counters.length) return;
 
   const DURATION = 1800; // ms
-  const easeOut = t => 1 - Math.pow(1 - t, 3);
+  const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
 
   const animateCounter = el => {
     const target = parseInt(el.dataset.target, 10);
@@ -237,7 +270,7 @@ window.addEventListener('load', () => {
     const tick = now => {
       const elapsed = now - start;
       const progress = clamp(elapsed / DURATION, 0, 1);
-      el.textContent = Math.floor(easeOut(progress) * target);
+      el.textContent = Math.floor(easeOutCubic(progress) * target);
       if (progress < 1) requestAnimationFrame(tick);
       else el.textContent = target;
     };
@@ -245,20 +278,22 @@ window.addEventListener('load', () => {
     requestAnimationFrame(tick);
   };
 
-  // Trigger on intersection
-  const observer = new IntersectionObserver(
-    entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          animateCounter(entry.target);
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.5 }
-  );
-
-  counters.forEach(c => observer.observe(c));
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animateCounter(entry.target);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+    counters.forEach(c => observer.observe(c));
+  } else {
+    counters.forEach(c => (c.textContent = c.dataset.target));
+  }
 })();
 
 // ============================================================
@@ -268,23 +303,27 @@ window.addEventListener('load', () => {
   const revealEls = $$('.reveal');
   if (!revealEls.length) return;
 
-  const observer = new IntersectionObserver(
-    entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
-  );
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    );
 
-  revealEls.forEach(el => observer.observe(el));
+    revealEls.forEach(el => observer.observe(el));
+  } else {
+    revealEls.forEach(el => el.classList.add('revealed'));
+  }
 })();
 
 // ============================================================
-// PROJECT FILTERING
+// PROJECT FILTERING (Grid Safe)
 // ============================================================
 (function initProjectFilter() {
   const filterBtns = $$('.filter-btn');
@@ -292,23 +331,20 @@ window.addEventListener('load', () => {
 
   if (!filterBtns.length || !projectCards.length) return;
 
-  const applyFilter = filter => {
+  const applyFilter = category => {
     projectCards.forEach(card => {
-      const cat = card.dataset.category;
-      const matches = filter === 'all' || cat === filter;
+      const cardCategory = card.dataset.category;
+      const matches = category === 'all' || cardCategory === category;
       if (matches) {
-        card.classList.remove('fade-out');
-        card.classList.add('fade-in');
+        card.classList.remove('is-hidden');
       } else {
-        card.classList.remove('fade-in');
-        card.classList.add('fade-out');
+        card.classList.add('is-hidden');
       }
     });
   };
 
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      // Update active state
       filterBtns.forEach(b => {
         b.classList.remove('active');
         b.setAttribute('aria-pressed', 'false');
@@ -330,39 +366,42 @@ window.addEventListener('load', () => {
   const backdrop = $('#modal-backdrop');
   const detailBtns = $$('.project-details-btn');
 
-  if (!modal) return;
+  if (!modal || !closeBtn || !backdrop) return;
 
-  // Populate modal with project data
+  let lastFocusedEl = null;
+
   const populateModal = projectId => {
     const data = PROJECT_DATA[projectId];
     if (!data) return;
 
-    $('#modal-img', modal).style.backgroundImage = `url('${data.image}')`;
-    $('#modal-img', modal).setAttribute('aria-label', data.title + ' project photo');
+    const imgSide = $('#modal-img', modal);
+    imgSide.style.backgroundImage = `url('${data.image}')`;
+    imgSide.setAttribute('aria-label', `${data.title} project showcase photograph`);
+
     $('#modal-cat', modal).textContent = data.category;
     $('#modal-title-text', modal).textContent = data.title;
     $('#modal-desc', modal).textContent = data.desc;
 
-    // Render spec items
     const specsEl = $('#modal-specs', modal);
     specsEl.innerHTML = Object.entries(data.specs)
-      .map(([key, val]) => `
+      .map(
+        ([key, val]) => `
         <div class="spec-item">
           <h5>${key}</h5>
           <p>${val}</p>
         </div>
-      `)
+      `
+      )
       .join('');
   };
 
-  // Focus trap elements
-  let lastFocusedEl = null;
   const getFocusableEls = () =>
     $$('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])', modal);
 
   const trapFocus = e => {
     if (e.key !== 'Tab') return;
     const focusable = getFocusableEls();
+    if (!focusable.length) return;
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
 
@@ -383,19 +422,28 @@ window.addEventListener('load', () => {
     lastFocusedEl = document.activeElement;
     populateModal(projectId);
     modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     closeBtn.focus();
-    document.addEventListener('keydown', trapFocus);
+    document.addEventListener('keydown', handleKeyDown);
   };
 
   const closeModal = () => {
     modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
-    document.removeEventListener('keydown', trapFocus);
+    document.removeEventListener('keydown', handleKeyDown);
     if (lastFocusedEl) lastFocusedEl.focus();
   };
 
-  // Bind open buttons
+  const handleKeyDown = e => {
+    if (e.key === 'Escape') {
+      closeModal();
+    } else {
+      trapFocus(e);
+    }
+  };
+
   detailBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const card = btn.closest('.project-card');
@@ -406,13 +454,10 @@ window.addEventListener('load', () => {
 
   closeBtn.addEventListener('click', closeModal);
   backdrop.addEventListener('click', closeModal);
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
-  });
 })();
 
 // ============================================================
-// CONTACT FORM — Validation & Submit Handler
+// CONTACT INQUIRY FORM — Accessible Field-Level Validation
 // ============================================================
 (function initContactForm() {
   const form = $('#contact-form');
@@ -425,20 +470,57 @@ window.addEventListener('load', () => {
   const statusMsg = $('#form-status-msg');
 
   const FIELDS = {
-    'form-name': { label: 'Full Name', validate: v => v.trim().length >= 2 },
-    'form-email': { label: 'Email Address', validate: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) },
-    'form-service': { label: 'Service Type', validate: v => v !== '' },
-    'form-message': { label: 'Project Brief', validate: v => v.trim().length >= 20 }
+    'form-name': {
+      label: 'Full Name',
+      errorId: 'form-name-error',
+      validate: v => v.trim().length >= 2,
+      errorMsg: 'Please enter your full name (minimum 2 characters).'
+    },
+    'form-email': {
+      label: 'Email Address',
+      errorId: 'form-email-error',
+      validate: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),
+      errorMsg: 'Please enter a valid email address.'
+    },
+    'form-service': {
+      label: 'Service Type',
+      errorId: 'form-service-error',
+      validate: v => v !== '' && v !== null,
+      errorMsg: 'Please select a service category.'
+    },
+    'form-message': {
+      label: 'Project Brief',
+      errorId: 'form-message-error',
+      validate: v => v.trim().length >= 15,
+      errorMsg: 'Please provide a brief project summary (minimum 15 characters).'
+    }
+  };
+
+  const setFieldError = (inputId, isError, msg = '') => {
+    const input = document.getElementById(inputId);
+    const errorEl = document.getElementById(FIELDS[inputId]?.errorId);
+    if (!input) return;
+
+    if (isError) {
+      input.classList.add('is-invalid');
+      input.setAttribute('aria-invalid', 'true');
+      if (errorEl) errorEl.textContent = msg;
+    } else {
+      input.classList.remove('is-invalid');
+      input.setAttribute('aria-invalid', 'false');
+      if (errorEl) errorEl.textContent = '';
+    }
   };
 
   const showStatus = (type, msg) => {
-    statusEl.className = `form-status ${type}`;
+    statusEl.className = `form-status form-grid-full ${type}`;
     statusMsg.textContent = msg;
-    // Update icon based on type
+
+    const icon = statusEl.querySelector('svg');
     if (type === 'success') {
-      statusEl.querySelector('svg').innerHTML = '<polyline points="20 6 9 17 4 12"/>';
+      icon.innerHTML = '<polyline points="20 6 9 17 4 12"/>';
     } else {
-      statusEl.querySelector('svg').innerHTML = '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>';
+      icon.innerHTML = '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>';
     }
   };
 
@@ -453,55 +535,51 @@ window.addEventListener('load', () => {
     }
   };
 
+  // Clear errors on input
+  Object.keys(FIELDS).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('input', () => setFieldError(id, false));
+      el.addEventListener('change', () => setFieldError(id, false));
+    }
+  });
+
   form.addEventListener('submit', async e => {
     e.preventDefault();
 
-    // Clear previous status
-    statusEl.className = 'form-status';
+    statusEl.className = 'form-status form-grid-full';
     statusMsg.textContent = '';
 
-    // Validate fields
-    const errors = [];
-    Object.entries(FIELDS).forEach(([id, { label, validate }]) => {
+    let hasErrors = false;
+    let firstInvalidEl = null;
+
+    Object.entries(FIELDS).forEach(([id, { validate, errorMsg }]) => {
       const el = document.getElementById(id);
       if (!el) return;
-      const valid = validate(el.value);
-      el.style.borderColor = valid ? '' : 'var(--color-error)';
-      el.setAttribute('aria-invalid', valid ? 'false' : 'true');
-      if (!valid) errors.push(label);
+      const isValid = validate(el.value);
+      if (!isValid) {
+        setFieldError(id, true, errorMsg);
+        hasErrors = true;
+        if (!firstInvalidEl) firstInvalidEl = el;
+      } else {
+        setFieldError(id, false);
+      }
     });
 
-    if (errors.length) {
-      showStatus('error', `Please check the following fields: ${errors.join(', ')}.`);
-      // Focus first invalid field
-      const firstInvalid = form.querySelector('[aria-invalid="true"]');
-      if (firstInvalid) firstInvalid.focus();
+    if (hasErrors) {
+      showStatus('error', 'Please correct the highlighted fields before submitting.');
+      if (firstInvalidEl) firstInvalidEl.focus();
       return;
     }
 
     setLoading(true);
 
-    // Simulate API submission (replace with real fetch/ajax call)
-    await new Promise(resolve => setTimeout(resolve, 1800));
+    // Simulate backend submission response
+    await new Promise(resolve => setTimeout(resolve, 1400));
 
     setLoading(false);
-    showStatus('success', 'Thank you! Your project brief has been received. Our preconstruction team will contact you within 48 business hours.');
+    showStatus('success', 'Thank you! Your project brief has been received. Our preconstruction team will follow up within 48 business hours.');
     form.reset();
-    // Reset border colors
-    Object.keys(FIELDS).forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.style.borderColor = '';
-    });
-  });
-
-  // Clear error styling on input
-  Object.keys(FIELDS).forEach(id => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.addEventListener('input', () => {
-      el.style.borderColor = '';
-      el.removeAttribute('aria-invalid');
-    });
   });
 })();
 
@@ -510,20 +588,32 @@ window.addEventListener('load', () => {
 // ============================================================
 (function initSubscribeForm() {
   const form = $('#subscribe-form');
+  const statusEl = $('#subscribe-status');
   if (!form) return;
 
   form.addEventListener('submit', e => {
     e.preventDefault();
     const emailEl = $('#subscribe-email');
     const val = emailEl?.value?.trim();
+
     if (!val || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
       emailEl.style.borderColor = 'var(--color-error)';
+      if (statusEl) {
+        statusEl.style.color = 'var(--color-error)';
+        statusEl.textContent = 'Please enter a valid email address.';
+      }
       return;
     }
+
     emailEl.style.borderColor = 'var(--color-success)';
-    emailEl.value = 'Subscribed! ✓';
+    emailEl.value = '';
     emailEl.disabled = true;
     form.querySelector('button').disabled = true;
+
+    if (statusEl) {
+      statusEl.style.color = 'var(--color-success)';
+      statusEl.textContent = 'Thank you for subscribing!';
+    }
   });
 })();
 
@@ -536,19 +626,20 @@ window.addEventListener('load', () => {
 })();
 
 // ============================================================
-// SMOOTH SCROLL for anchor links (with header offset)
+// SMOOTH SCROLL FOR ANCHOR LINKS (Header Offset Aware)
 // ============================================================
 (function initSmoothScroll() {
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       const targetId = this.getAttribute('href').slice(1);
       if (!targetId) return;
+
       const target = document.getElementById(targetId);
       if (!target) return;
-      e.preventDefault();
 
-      const headerH = document.getElementById('site-header')?.offsetHeight || 80;
-      const top = target.getBoundingClientRect().top + window.scrollY - headerH;
+      e.preventDefault();
+      const headerH = document.getElementById('site-header')?.offsetHeight || 70;
+      const top = target.getBoundingClientRect().top + window.scrollY - headerH + 2;
       window.scrollTo({ top, behavior: 'smooth' });
     });
   });
