@@ -270,7 +270,8 @@ h1, h2, h3, h4, h5, h6 {
 .section-desc {
   font-size: clamp(0.95rem, 0.8vw + 0.5rem, 1.125rem);
   color: var(--color-text-body-light);
-  max-width: 660px;
+  max-width: min(660px, 100%);
+  width: 100%;
   line-height: 1.6;
 }
 
@@ -758,7 +759,8 @@ h1, h2, h3, h4, h5, h6 {
   font-size: clamp(0.95rem, 0.6vw + 0.8rem, 1.15rem);
   color: var(--color-text-body-dark);
   margin-bottom: clamp(1.75rem, 3.5vw, 2.5rem);
-  max-width: 620px;
+  max-width: min(620px, 100%);
+  width: 100%;
   line-height: 1.65;
 }
 
