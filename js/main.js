@@ -12,7 +12,7 @@ const PROJECT_DATA = {
   p1: {
     title: 'Meridian Tower HQ',
     category: 'Commercial',
-    image: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=80&auto=format',
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80&auto=format',
     desc: 'A 42-story Class A corporate headquarters in downtown Chicago. Apex served as the General Contractor, self-performing concrete, structural steel erection, and mechanical rough-ins. The project achieved LEED Gold certification and completed 11 days ahead of schedule.',
     specs: {
       Client: 'Meridian Capital Group',
@@ -26,7 +26,7 @@ const PROJECT_DATA = {
   p2: {
     title: 'Clearwater River Bridge',
     category: 'Civil',
-    image: 'https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=800&q=80&auto=format',
+    image: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&q=80&auto=format',
     desc: 'A twin-span suspension bridge carrying a six-lane state highway across the Clearwater River in Wisconsin. The project required precision cofferdam construction, precast concrete deck panels, and involved zero lane closures of the existing adjacent bridge during construction.',
     specs: {
       Client: 'Wisconsin DOT',
@@ -40,7 +40,7 @@ const PROJECT_DATA = {
   p3: {
     title: 'NorthPort Logistics Hub',
     category: 'Industrial',
-    image: 'https://images.unsplash.com/photo-1553787499-6f9133242796?w=800&q=80&auto=format',
+    image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80&auto=format',
     desc: 'A 2.4-million-square-foot distribution mega-campus comprising three cross-dock warehouses, a transportation management facility, and 48-acre truck court. Apex delivered the turnkey industrial development, including all site utilities and a private rail spur.',
     specs: {
       Client: 'NorthPort Ventures LLC',
@@ -54,7 +54,7 @@ const PROJECT_DATA = {
   p4: {
     title: 'Harborview Mixed-Use',
     category: 'Commercial',
-    image: 'https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?w=800&q=80&auto=format',
+    image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80&auto=format',
     desc: 'A $145M mixed-use waterfront development encompassing 280 luxury residential units, 85,000 sq ft of ground-level retail, and a 400-space parking structure. Built on a challenging lakefront site requiring deep foundation caissons reaching bedrock at 90 feet.',
     specs: {
       Client: 'Harborview Dev. Partners',
@@ -68,7 +68,7 @@ const PROJECT_DATA = {
   p5: {
     title: 'Metro Water Treatment Plant',
     category: 'Civil',
-    image: 'https://images.unsplash.com/photo-1519003300449-424ad0405076?w=800&q=80&auto=format',
+    image: 'https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?w=800&q=80&auto=format',
     desc: 'Expansion of a regional water treatment facility from 80 MGD to 135 MGD capacity, adding advanced biological nutrient removal, UV disinfection systems, and control room upgrades. The facility remained fully operational throughout the phased 3-year construction period.',
     specs: {
       Client: 'Metro Water Reclamation',
@@ -82,7 +82,7 @@ const PROJECT_DATA = {
   p6: {
     title: 'Vertex Semiconductor Plant',
     category: 'Industrial',
-    image: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80&auto=format',
+    image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&q=80&auto=format',
     desc: 'A highly controlled ISO Class 5 cleanroom fabrication facility for advanced semiconductor manufacturing. The project required vibration-isolated structural slabs, ultra-pure water systems, specialized HVAC with sub-micron filtration, and a private 138kV substation.',
     specs: {
       Client: 'Vertex Microelectronics',
